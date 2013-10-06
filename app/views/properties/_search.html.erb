@@ -1,0 +1,45 @@
+<div id="search">
+  <%= form_tag request.path, method: :get do %>
+
+    <div>
+      <%= label_tag :price_min, 'Price' %>
+      <%= text_field_tag :price_min, @search_options[:price_min], class: 'range' %>
+      to 
+      <%= text_field_tag :price_max, @search_options[:price_max], class: 'range' %>
+    </div>
+
+    <div>
+      <%= label_tag :beds, 'Beds' %>
+      <%= select_tag :beds, bed_options_for_select(@search_options[:beds]) %>
+    </div>
+
+    <div>
+      <%= label_tag :baths, 'Baths' %>
+      <%= select_tag :baths, bath_options_for_select(@search_options[:baths]) %>
+    </div>
+
+    <div>
+      <%= label_tag :square_feet_min, 'Square Feet' %>
+      <%= text_field_tag :square_feet_min, @search_options[:square_feet_min], class: 'range' %>
+      to 
+      <%= text_field_tag :square_feet_max, @search_options[:square_feet_max], class: 'range' %>
+    </div>
+
+    <div>
+      <%= label_tag :lot_size_min, 'Lot Size' %>
+      <%= text_field_tag :lot_size_min, @search_options[:lot_size_min], class: 'range' %>
+      to 
+      <%= text_field_tag :lot_size_max, @search_options[:lot_size_max], class: 'range' %>
+    </div>
+
+    <div>
+      <%= label_tag :year_min, 'Year Built' %>
+      <%= text_field_tag :year_min, @search_options[:year_min], class: 'range' %>
+      to 
+      <%= text_field_tag :year_max, @search_options[:year_max], class: 'range' %>
+    </div>
+
+    <%= submit_tag 'Search' %>
+
+  <% end %>
+</div>

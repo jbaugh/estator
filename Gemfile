@@ -8,6 +8,7 @@ gem 'rails', '3.2.13'
 gem 'sqlite3'
 
 gem 'rspec-rails', '~> 2.0'
+gem 'acts-as-taggable-on'
 
 
 # Gems used only for assets and not required
