@@ -22,4 +22,12 @@ module PropertiesHelper
       '6+' => "6"
     }, selected)
   end
+
+  def display_price(property)
+    if property.status == Property::STATUS[:for_rent]
+      return "#{number_to_currency(property.price / 120)} per month"
+    else
+      return "#{number_to_currency(property.price)}"
+    end
+  end
 end

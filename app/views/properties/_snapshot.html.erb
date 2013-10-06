@@ -1,8 +1,12 @@
 <div class="property">
 
+  <img src="<%= property.image_url %>" />
+
   <div class="name"><%= property.name %></div>
 
-  <div class="price"><%= number_to_currency(property.price) %></div>
+  <div class="price">
+    <%= display_price(property) %>
+  </div>
 
   <div class="baths"><%= property.baths %> baths</div>
 
