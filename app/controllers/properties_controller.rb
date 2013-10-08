@@ -1,8 +1,7 @@
 class PropertiesController < ApplicationController
-  before_filter :setup_search
+  before_filter :setup_search, except: :show
 
   def index
-    @properties = Property.available.where(@search_params)
 
     respond_to do |format|
       format.html { render :index }
@@ -20,7 +19,7 @@ class PropertiesController < ApplicationController
   end
 
   def rentals
-    @properties = Property.available.rentals.where(@search_params)
+    @properties = @properties.rentals
 
     respond_to do |format|
       format.html { render :index }
@@ -29,7 +28,7 @@ class PropertiesController < ApplicationController
   end
 
   def for_sale
-    @properties = Property.available.for_sale.where(@search_params)
+    @properties = @properties.for_sale
     
     respond_to do |format|
       format.html { render :index }
@@ -38,7 +37,7 @@ class PropertiesController < ApplicationController
   end
 
   def houses
-    @properties = Property.available.houses.where(@search_params)
+    @properties = @properties.houses
     
     respond_to do |format|
       format.html { render :index }
@@ -47,7 +46,7 @@ class PropertiesController < ApplicationController
   end
 
   def condos
-    @properties = Property.available.condos.where(@search_params)
+    @properties = @properties.condos
     
     respond_to do |format|
       format.html { render :index }
@@ -56,7 +55,7 @@ class PropertiesController < ApplicationController
   end
 
   def apartments
-    @properties = Property.available.apartments.where(@search_params)
+    @properties = @properties.apartments
     
     respond_to do |format|
       format.html { render :index }
@@ -65,7 +64,7 @@ class PropertiesController < ApplicationController
   end
 
   def recent
-    @properties = Property.available.recent.where(@search_params)
+    @properties = @properties.recent
     
     respond_to do |format|
       format.html { render :index }
@@ -76,34 +75,32 @@ class PropertiesController < ApplicationController
   private
 
   def setup_search
-    @search_options = {
-      :price_min => params[:price_min],
-      :price_max => params[:price_max],
-      :beds => params[:beds],
-      :baths => params[:baths],
-      :square_feet_min => params[:square_feet_min],
-      :square_feet_max => params[:square_feet_max],
-      :lot_size_min => params[:lot_size_min],
-      :lot_size_max => params[:lot_size_max],
-      :year_min => params[:year_min],
-      :year_max => params[:year_max]
-    }
+    # Start with all available properties
+    @properties = Property.available
+    @search_options = {}
 
-    @search_params = []
+    # Run through each passed param, and call the appropriate scope, building the AR relation
 
-    @search_params << "bedrooms > #{@search_options[:beds]}" if @search_options[:beds].present?
-    @search_params << "baths > #{@search_options[:baths]}" if @search_options[:baths].present?
+    {
+      :beds => :at_least_beds,
+      :baths => :at_least_baths,
+      :price_min => :more_expensive_than,
+      :price_max => :cheaper_than,
+      :square_feet_min => :more_sq_ft_than,
+      :square_feet_max => :less_sq_ft_than,
+      :lot_size_min => :more_lot_size_than,
+      :lot_size_max => :less_lot_size_than,
+      :year_min => :newer_than,
+      :year_max => :older_than,
+    }.each do |option, scope|
+      if params[option].present?
+        # Sets the search options so it can be used to populate the search form
+        @search_options[option] = params[option]
 
-    @search_params << "price > #{@search_options[:price_min]}" if @search_options[:price_min].present?
-    @search_params << "square_feet > #{@search_options[:square_feet_min]}" if @search_options[:square_feet_min].present?
-    @search_params << "lot_size > #{@search_options[:lot_size_min]}" if @search_options[:lot_size_min].present?
-    @search_params << "year_built > #{@search_options[:year_min]}" if @search_options[:year_min].present?
+        # Dyanmically chains a scope onto the AR relation
+        @properties = @properties.send(scope, @search_options[option])
+      end
+    end
 
-    @search_params << "price < #{@search_options[:price_max]}" if @search_options[:price_max].present?
-    @search_params << "square_feet < #{@search_options[:square_feet_max]}" if @search_options[:square_feet_max].present?
-    @search_params << "lot_size < #{@search_options[:lot_size_max]}" if @search_options[:lot_size_max].present?
-    @search_params << "year_built < #{@search_options[:year_max]}" if @search_options[:year_max].present?
-
-    @search_params = @search_params.join(" AND ")
   end
 end

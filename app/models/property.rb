@@ -27,4 +27,22 @@ class Property < ActiveRecord::Base
   scope :apartments, -> { where(property_type: TYPE[:apartment]) }
   scope :condos, -> { where(property_type: TYPE[:condo]) }
   scope :houses, -> { where(property_type: TYPE[:house]) }
+
+
+  # Filtering scopes
+  scope :at_least_beds, ->(num) { where("bedrooms >= ?", num) }
+  scope :at_least_baths, ->(num) { where("baths >= ?", num) }
+
+  scope :more_expensive_than, ->(num) { where("price > ?", num) }
+  scope :cheaper_than, ->(num) { where("price < ?", num) }
+
+  scope :more_sq_ft_than, ->(num) { where("square_feet > ?", num) }
+  scope :less_sq_ft_than, ->(num) { where("square_feet < ?", num) }
+
+  scope :more_lot_size_than, ->(num) { where("lot_size > ?", num) }
+  scope :less_lot_size_than, ->(num) { where("lot_size < ?", num) }
+
+  scope :newer_than, ->(num) { where("year_built > ?", num) }
+  scope :older_than, ->(num) { where("year_built < ?", num) }
+
 end

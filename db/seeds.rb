@@ -10,8 +10,8 @@
     year_built: 1980 + rand(30),
     square_feet: sq_ft,
     lot_size: sq_ft + rand(500),
-    baths: 0.5 + 0.5 * rand(4),
-    bedrooms: rand(3),
+    baths: 0.5 + 0.5 * rand(6),
+    bedrooms: rand(6),
     image_url: "/assets/#{rand(7)}.jpg"
   }).first_or_create
 end
