@@ -23,6 +23,21 @@ module PropertiesHelper
     }, selected)
   end
 
+  def options_for_property_type(selected)
+    options_for_select({
+      'Apartment' => Property::TYPE[:apartment], 
+      'Condo' => Property::TYPE[:condo], 
+      'House' => Property::TYPE[:house]
+    }, selected)
+  end
+
+  def options_for_status(selected)
+    options_for_select({
+      'For Sale' => Property::STATUS[:for_sale], 
+      'For Rent' => Property::STATUS[:for_rent]
+    }, selected)
+  end
+
   def display_price(property)
     if property.status == Property::STATUS[:for_rent]
       return "#{number_to_currency(property.price / 120)} per month"

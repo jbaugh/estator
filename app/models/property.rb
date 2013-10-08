@@ -16,6 +16,16 @@ class Property < ActiveRecord::Base
     :house          => 2
   }
 
+  validates :name, presence: true
+  validates :property_type, presence: true
+  validates :status, presence: true
+  validates :price, presence: true
+  validates :year_built, presence: true
+  validates :square_feet, presence: true
+  validates :lot_size, presence: true
+  validates :baths, presence: true
+  validates :bedrooms, presence: true
+
   attr_accessible :name, :property_type, :status, :price, :year_built, :square_feet,
                   :lot_size, :baths, :bedrooms, :image_url
 

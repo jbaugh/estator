@@ -11,14 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131006023145) do
+ActiveRecord::Schema.define(:version => 20131008052317) do
 
   create_table "properties", :force => true do |t|
     t.string   "name",          :limit => 150
     t.integer  "property_type"
     t.integer  "status"
     t.integer  "price"
-    t.date     "year_built"
+    t.integer  "year_built"
     t.integer  "square_feet"
     t.integer  "lot_size"
     t.string   "image_url"

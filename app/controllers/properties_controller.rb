@@ -1,8 +1,38 @@
 class PropertiesController < ApplicationController
-  before_filter :setup_search, except: :show
+  before_filter :setup_search
+
+
+  def new
+    @property = Property.new
+
+    respond_to do |format|
+      format.html { render }
+    end
+  end
+
+  def create
+    @property = Property.new(params[:property])
+    success = @property.save
+
+    respond_to do |format|
+      format.html do 
+        if success
+          flash[:notice] = "You have listed this property!"
+          redirect_to property_path(@property)
+        else
+          flash[:error] = "Failed to list property: #{@property.errors.full_messages.to_sentence}"
+          render :new
+        end
+        
+      end
+
+      format.json do 
+        render json: {property: @property, success: success }
+      end
+    end
+  end
 
   def index
-
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @properties }
