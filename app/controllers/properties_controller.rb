@@ -1,41 +1,76 @@
 class PropertiesController < ApplicationController
   before_filter :setup_search
+
   def index
     @properties = Property.available.where(@search_params)
+
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @properties }
+    end
   end
 
   def show
-    @properties = Property.find(params[:id])
+    @property = Property.find(params[:id])
+
+    respond_to do |format|
+      format.html { render }
+      format.json { render json: @property }
+    end
   end
 
   def rentals
     @properties = Property.available.rentals.where(@search_params)
-    render action: :index
+
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @properties }
+    end
   end
 
   def for_sale
     @properties = Property.available.for_sale.where(@search_params)
-    render action: :index
+    
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @properties }
+    end
   end
 
   def houses
     @properties = Property.available.houses.where(@search_params)
-    render action: :index
+    
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @properties }
+    end
   end
 
   def condos
     @properties = Property.available.condos.where(@search_params)
-    render action: :index
+    
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @properties }
+    end
   end
 
   def apartments
     @properties = Property.available.apartments.where(@search_params)
-    render action: :index
+    
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @properties }
+    end
   end
 
   def recent
     @properties = Property.available.recent.where(@search_params)
-    render action: :index
+    
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @properties }
+    end
   end
 
   private
